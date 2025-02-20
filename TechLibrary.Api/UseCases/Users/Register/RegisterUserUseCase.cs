@@ -1,5 +1,8 @@
-﻿using TechLibrary.Api.Domain.Entities;
-using TechLibrary.Api.Infrastructure;
+﻿using FluentValidation.Results;
+using TechLibrary.Api.Domain.Entities;
+using TechLibrary.Api.Infrastructure.DataAccess;
+using TechLibrary.Api.Infrastructure.Security.Cryptography;
+using TechLibrary.Api.Infrastructure.Security.Tokens.Access;
 using TechLibrary.Communication.Requests;
 using TechLibrary.Communication.Responses;
 using TechLibrary.Exception;
@@ -8,6 +11,16 @@ namespace TechLibrary.Api.UseCases.Users.Register
 {
     public class RegisterUserUseCase
     {
+        private readonly JwtTokenGenerator _tokenGenerator;
+        private readonly BCryptAlgorithm _cryptography;
+        private readonly TechLibraryDbContext _dbContext;
+
+        public RegisterUserUseCase(JwtTokenGenerator tokenGenerator, BCryptAlgorithm cryptography, TechLibraryDbContext dbContext)
+        {
+            _tokenGenerator = tokenGenerator;
+            _cryptography = cryptography;
+            _dbContext = dbContext;
+        }
         public ResponseRegisteredUserJson Execute(RequestUserJson request)
         {
             Validate(request);
@@ -16,16 +29,16 @@ namespace TechLibrary.Api.UseCases.Users.Register
             {
                 Name = request.Name,
                 Email = request.Email,
-                Password = request.Password,
+                Password = _cryptography.HashPassword(request.Password),
             };
 
-            var dbContext = new TechLibraryDbContext();
-            dbContext.Users.Add(entity);
-            dbContext.SaveChanges();
+            _dbContext.Users.Add(entity);
+            _dbContext.SaveChanges();
 
             return new ResponseRegisteredUserJson 
             {
                 Name = entity.Name,
+                AccessToken = _tokenGenerator.GenerateToken(entity),
             };
         }
 
@@ -33,6 +46,9 @@ namespace TechLibrary.Api.UseCases.Users.Register
         {
             var validator = new RegisterUserValidator();
             var result = validator.Validate(request);
+
+            var existsUserWithEmail = _dbContext.Users.Any(user => user.Email.Equals(request.Email));
+            if(existsUserWithEmail) result.Errors.Add(new ValidationFailure("Email", "E-mail já cadastrado."));
 
             if (result.IsValid == false)
             {
