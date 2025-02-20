@@ -5,7 +5,7 @@ using TechLibrary.Communication.Responses;
 
 namespace TechLibrary.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     [ProducesResponseType(typeof(ResponseRegisteredUserJson), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResponseErrorMessagesJson), StatusCodes.Status401Unauthorized)]

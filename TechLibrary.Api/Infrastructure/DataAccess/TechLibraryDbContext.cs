@@ -8,7 +8,10 @@ namespace TechLibrary.Api.Infrastructure.DataAccess
         public DbSet<User> Users { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source=C:\\Users\\User\\Documents\\Desenvolvimento\\TechLibrary\\TechLibraryDb.db");
+            var solutionPath = Directory.GetParent(Directory.GetCurrentDirectory())?.Parent?.FullName;
+            var dbPath = Path.Combine(solutionPath ?? "", "TechLibrary\\TechLibraryDb.db");
+
+            optionsBuilder.UseSqlite($"Data Source={dbPath}");
 
         }
     }

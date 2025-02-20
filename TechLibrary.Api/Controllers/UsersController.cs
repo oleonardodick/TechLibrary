@@ -5,7 +5,7 @@ using TechLibrary.Communication.Responses;
 
 namespace TechLibrary.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
     {
