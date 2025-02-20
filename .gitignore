@@ -364,3 +364,4 @@ FodyWeavers.xsd
 
 # Database
 /TechLibraryDb.db
+/TechLibrary.Api/appsettings.json
