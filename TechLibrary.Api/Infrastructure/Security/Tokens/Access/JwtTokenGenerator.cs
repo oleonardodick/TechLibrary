@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using TechLibrary.Api.Domain.Entities;
+using TechLibrary.Api.Utils;
 
 namespace TechLibrary.Api.Infrastructure.Security.Tokens.Access
 {
@@ -17,6 +18,7 @@ namespace TechLibrary.Api.Infrastructure.Security.Tokens.Access
 
         public string GenerateToken(User user)
         {
+            var securityKey = JwtSecurityHelper.GetSecurityKey(_configuration);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Expires = DateTime.UtcNow.AddHours(1),
@@ -24,21 +26,11 @@ namespace TechLibrary.Api.Infrastructure.Security.Tokens.Access
                 [
                     new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                 ]),
-                SigningCredentials = new SigningCredentials(SecurityKey(), SecurityAlgorithms.HmacSha256Signature)
+                SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature)
             };
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
-        }
-        
-        private SymmetricSecurityKey SecurityKey()
-        {
-            var signingKey = _configuration["JwtSettings:SigningKey"]
-                ?? throw new InvalidOperationException("SigningKey não está configurada.");
-
-            var symmetricKey = Encoding.UTF8.GetBytes(signingKey);
-
-            return new SymmetricSecurityKey(symmetricKey);
         }
     }
 }

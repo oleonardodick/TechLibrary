@@ -7,8 +7,6 @@ namespace TechLibrary.Api.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    [ProducesResponseType(typeof(ResponseRegisteredUserJson), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ResponseErrorMessagesJson), StatusCodes.Status401Unauthorized)]
     public class LoginController : ControllerBase
     {
         private readonly DoLoginUseCase _doLoginUseCase;
@@ -19,6 +17,8 @@ namespace TechLibrary.Api.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(typeof(ResponseRegisteredUserJson), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseErrorMessagesJson), StatusCodes.Status401Unauthorized)]
         public IActionResult DoLogin(RequestLoginJson request)
         {
             var response = _doLoginUseCase.Execute(request);
