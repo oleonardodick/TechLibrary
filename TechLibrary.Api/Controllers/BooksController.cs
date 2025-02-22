@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using TechLibrary.Api.UseCases.Books.Filter;
 using TechLibrary.Communication.Requests;
 using TechLibrary.Communication.Responses;

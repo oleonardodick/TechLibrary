@@ -1,17 +1,16 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System.Text;
 using TechLibrary.Api.Filters;
-using TechLibrary.Api.Infrastructure.DataAccess;
-using TechLibrary.Api.Infrastructure.Security.Cryptography;
-using TechLibrary.Api.Infrastructure.Security.Tokens.Access;
 using TechLibrary.Api.Services.LoggedUser;
 using TechLibrary.Api.UseCases.Books.Filter;
 using TechLibrary.Api.UseCases.Checkouts;
 using TechLibrary.Api.UseCases.Login.DoLogin;
 using TechLibrary.Api.UseCases.Users.Register;
-using TechLibrary.Api.Utils;
+using TechLibrary.Infrastructure.DataAccess;
+using TechLibrary.Infrastructure.Security.Cryptography;
+using TechLibrary.Infrastructure.Security.Tokens.Access;
+using TechLibrary.Infrastructure.Utils;
 
 const string AUTHENTICATION_TYPE = "Bearer";
 

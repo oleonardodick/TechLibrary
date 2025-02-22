@@ -1,11 +1,11 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
-using TechLibrary.Api.Domain.Entities;
-using TechLibrary.Api.Utils;
+using TechLibrary.Domain.Entities;
+using TechLibrary.Infrastructure.Utils;
 
-namespace TechLibrary.Api.Infrastructure.Security.Tokens.Access
+namespace TechLibrary.Infrastructure.Security.Tokens.Access
 {
     public class JwtTokenGenerator
     {

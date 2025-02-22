@@ -1,7 +1,7 @@
-﻿using TechLibrary.Api.Domain.Entities;
-using TechLibrary.Api.Infrastructure.DataAccess;
-using TechLibrary.Api.Services.LoggedUser;
+﻿using TechLibrary.Api.Services.LoggedUser;
+using TechLibrary.Domain.Entities;
 using TechLibrary.Exception;
+using TechLibrary.Infrastructure.DataAccess;
 
 namespace TechLibrary.Api.UseCases.Checkouts
 {
@@ -24,7 +24,7 @@ namespace TechLibrary.Api.UseCases.Checkouts
             var user = _loggedUserService.User();
 
             var entity = new Checkout
-            {
+            {                
                 UserId = user.Id,
                 BookId = bookId,
                 ExpectedReturnDate = DateTime.UtcNow.AddDays(MAX_LOAN_DAYS)

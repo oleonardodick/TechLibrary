@@ -1,6 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
-using TechLibrary.Api.Domain.Entities;
-using TechLibrary.Api.Infrastructure.DataAccess;
+using TechLibrary.Domain.Entities;
+using TechLibrary.Infrastructure.DataAccess;
 
 namespace TechLibrary.Api.Services.LoggedUser
 {

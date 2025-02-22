@@ -1,9 +1,9 @@
-﻿using TechLibrary.Api.Infrastructure.DataAccess;
-using TechLibrary.Api.Infrastructure.Security.Cryptography;
-using TechLibrary.Api.Infrastructure.Security.Tokens.Access;
-using TechLibrary.Communication.Requests;
+﻿using TechLibrary.Communication.Requests;
 using TechLibrary.Communication.Responses;
 using TechLibrary.Exception;
+using TechLibrary.Infrastructure.DataAccess;
+using TechLibrary.Infrastructure.Security.Cryptography;
+using TechLibrary.Infrastructure.Security.Tokens.Access;
 
 namespace TechLibrary.Api.UseCases.Login.DoLogin
 {
