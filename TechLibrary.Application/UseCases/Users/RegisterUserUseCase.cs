@@ -4,9 +4,9 @@ using TechLibrary.Application.DTOs.Users.Request;
 using TechLibrary.Application.DTOs.Users.Response;
 using TechLibrary.Application.Interfaces.Users;
 using TechLibrary.Domain.Entities;
+using TechLibrary.Domain.Exceptions;
 using TechLibrary.Domain.Interfaces.Repositories;
 using TechLibrary.Domain.Interfaces.Services;
-using TechLibrary.Exception;
 
 namespace TechLibrary.Application.UseCases.Users
 {

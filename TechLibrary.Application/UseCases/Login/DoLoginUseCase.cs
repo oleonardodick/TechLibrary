@@ -1,9 +1,9 @@
 ﻿using TechLibrary.Application.DTOs.Login.Request;
 using TechLibrary.Application.DTOs.Users.Response;
 using TechLibrary.Application.Interfaces.Login;
+using TechLibrary.Domain.Exceptions;
 using TechLibrary.Domain.Interfaces.Repositories;
 using TechLibrary.Domain.Interfaces.Services;
-using TechLibrary.Exception;
 
 namespace TechLibrary.Application.UseCases.Login
 {
