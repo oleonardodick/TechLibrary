@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TechLibrary.Api.UseCases.Users.Register;
-using TechLibrary.Communication.Requests;
-using TechLibrary.Communication.Responses;
+using TechLibrary.Application.DTOs.Error.Response;
+using TechLibrary.Application.DTOs.Users.Request;
+using TechLibrary.Application.DTOs.Users.Response;
+using TechLibrary.Application.Interfaces.Users;
 
 namespace TechLibrary.Api.Controllers
 {
@@ -9,19 +10,19 @@ namespace TechLibrary.Api.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly RegisterUserUseCase _registerUserUseCase;
+        private readonly IRegisterUserUseCase _registerUserUseCase;
 
-        public UsersController(RegisterUserUseCase registerUserUseCase)
+        public UsersController(IRegisterUserUseCase registerUserUseCase)
         {
             _registerUserUseCase = registerUserUseCase;
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(ResponseRegisteredUserJson), StatusCodes.Status201Created)]
-        [ProducesResponseType(typeof(ResponseErrorMessagesJson), StatusCodes.Status400BadRequest)]
-        public IActionResult Register(RequestUserJson request)
+        [ProducesResponseType(typeof(ResponseRegisteredUserDTO), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ResponseErrorMessagesDTO), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Register(RequestRegisterUserDTO request)
         {
-            var response = _registerUserUseCase.Execute(request);
+            var response = await _registerUserUseCase.RegisterUser(request);
             return Created(string.Empty, response);
         }
     }

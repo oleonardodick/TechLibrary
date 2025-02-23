@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TechLibrary.Api.UseCases.Checkouts;
+using TechLibrary.Application.Interfaces.Checkout;
 
 namespace TechLibrary.Api.Controllers
 {
@@ -9,18 +9,18 @@ namespace TechLibrary.Api.Controllers
     [Authorize]
     public class CheckoutsController : ControllerBase
     {
-        private readonly BookCheckoutUseCase _bookCheckoutUseCase;
+        private readonly IBookCheckoutUseCase _bookCheckoutUseCase;
 
-        public CheckoutsController(BookCheckoutUseCase bookCheckoutUseCase)
+        public CheckoutsController(IBookCheckoutUseCase bookCheckoutUseCase)
         {
             _bookCheckoutUseCase = bookCheckoutUseCase;
         }
 
         [HttpPost]
         [Route("{bookId}")]
-        public IActionResult BookCheckout(Guid bookId)
+        public async Task<IActionResult> BookCheckout(Guid bookId)
         {
-            _bookCheckoutUseCase.CheckoutBook(bookId);
+            await _bookCheckoutUseCase.CheckoutBook(bookId);
 
             return NoContent();
         }

@@ -7,15 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="11.11.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TechLibrary.Communication\TechLibrary.Communication.csproj" />
+    <ProjectReference Include="..\TechLibrary.Application\TechLibrary.Application.csproj" />
     <ProjectReference Include="..\TechLibrary.Domain\TechLibrary.Domain.csproj" />
-    <ProjectReference Include="..\TechLibrary.Exception\TechLibrary.Exception.csproj" />
     <ProjectReference Include="..\TechLibrary.Infrastructure\TechLibrary.Infrastructure.csproj" />
   </ItemGroup>
 

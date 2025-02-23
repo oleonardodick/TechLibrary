@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using TechLibrary.Communication.Responses;
-using TechLibrary.Exception;
+using TechLibrary.Application.DTOs.Error.Response;
+using TechLibrary.Domain.Exceptions;
 
 namespace TechLibrary.Api.Filters
 {
@@ -12,7 +12,7 @@ namespace TechLibrary.Api.Filters
             if(context.Exception is TechLibraryException exception)
             {
                 context.HttpContext.Response.StatusCode = (int)exception.GetStatusCode();
-                context.Result = new ObjectResult(new ResponseErrorMessagesJson
+                context.Result = new ObjectResult(new ResponseErrorMessagesDTO
                 {
                     Errors = exception.GetErrorMessages()
                 });
@@ -20,7 +20,7 @@ namespace TechLibrary.Api.Filters
             else
             {
                 context.HttpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
-                context.Result = new ObjectResult(new ResponseErrorMessagesJson
+                context.Result = new ObjectResult(new ResponseErrorMessagesDTO
                 {
                     Errors = ["Erro desconhecido."]
                 });

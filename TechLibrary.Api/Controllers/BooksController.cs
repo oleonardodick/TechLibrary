@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TechLibrary.Api.UseCases.Books.Filter;
-using TechLibrary.Communication.Requests;
-using TechLibrary.Communication.Responses;
+using System.Net.Mime;
+using TechLibrary.Application.DTOs.Books.Request;
+using TechLibrary.Application.DTOs.Books.Response;
+using TechLibrary.Application.Interfaces.Books;
 
 namespace TechLibrary.Api.Controllers
 {
@@ -9,18 +10,18 @@ namespace TechLibrary.Api.Controllers
     [ApiController]
     public class BooksController : ControllerBase
     {
-        private readonly FilterBookUseCase _filterBookUseCase;
-
-        public BooksController(FilterBookUseCase filterBookUseCase)
+        private readonly IFilterBooksUseCase _filterBookUseCase;
+        public BooksController(IFilterBooksUseCase filterBooksUseCase)
         {
-            _filterBookUseCase = filterBookUseCase;
+            _filterBookUseCase = filterBooksUseCase;    
         }
+
         [HttpGet("Filter")]
-        [ProducesResponseType(typeof(ResponseBooksJson), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseBooksDTO), StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public IActionResult Filter(int pageNumber, string? title)
+        public async Task<IActionResult> Filter(int pageNumber, string? title)
         {
-            var result = _filterBookUseCase.Filter(new RequestFilterBooksJson
+            var result = await _filterBookUseCase.ExecuteAsync(new RequestFilterBooksDTO
             {
                 PageNumber = pageNumber,
                 Title = title

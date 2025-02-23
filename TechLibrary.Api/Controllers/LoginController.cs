@@ -1,27 +1,27 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TechLibrary.Api.UseCases.Login.DoLogin;
-using TechLibrary.Communication.Requests;
-using TechLibrary.Communication.Responses;
-
+using TechLibrary.Application.DTOs.Error.Response;
+using TechLibrary.Application.DTOs.Login.Request;
+using TechLibrary.Application.DTOs.Users.Response;
+using TechLibrary.Application.Interfaces.Login;
 namespace TechLibrary.Api.Controllers
 {
     [Route("[controller]")]
     [ApiController]
     public class LoginController : ControllerBase
     {
-        private readonly DoLoginUseCase _doLoginUseCase;
+        private readonly IDoLoginUseCase _doLoginUseCase;
 
-        public LoginController(DoLoginUseCase doLoginUseCase)
+        public LoginController(IDoLoginUseCase doLoginUseCase)
         {
             _doLoginUseCase = doLoginUseCase;
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(ResponseRegisteredUserJson), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ResponseErrorMessagesJson), StatusCodes.Status401Unauthorized)]
-        public IActionResult DoLogin(RequestLoginJson request)
+        [ProducesResponseType(typeof(ResponseRegisteredUserDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseErrorMessagesDTO), StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> DoLogin(RequestLoginDTO request)
         {
-            var response = _doLoginUseCase.Execute(request);
+            var response = await _doLoginUseCase.ExecuteLoginAsync(request);
             return Ok(response);
         }
     }

@@ -1,20 +1,31 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using TechLibrary.Api.Filters;
-using TechLibrary.Api.Services.LoggedUser;
-using TechLibrary.Api.UseCases.Books.Filter;
-using TechLibrary.Api.UseCases.Checkouts;
-using TechLibrary.Api.UseCases.Login.DoLogin;
-using TechLibrary.Api.UseCases.Users.Register;
+using TechLibrary.Application.DTOs.Users.Request;
+using TechLibrary.Application.Interfaces.Books;
+using TechLibrary.Application.Interfaces.Checkout;
+using TechLibrary.Application.Interfaces.Login;
+using TechLibrary.Application.Interfaces.Users;
+using TechLibrary.Application.UseCases.Books;
+using TechLibrary.Application.UseCases.Checkout;
+using TechLibrary.Application.UseCases.Login;
+using TechLibrary.Application.UseCases.Users;
+using TechLibrary.Application.Validators;
+using TechLibrary.Domain.Interfaces.Repositories;
+using TechLibrary.Domain.Interfaces.Services;
 using TechLibrary.Infrastructure.DataAccess;
-using TechLibrary.Infrastructure.Security.Cryptography;
-using TechLibrary.Infrastructure.Security.Tokens.Access;
+using TechLibrary.Infrastructure.DataAccess.Repositories;
+using TechLibrary.Infrastructure.Services.CurrentUserService;
+using TechLibrary.Infrastructure.Services.Security.Cryptography;
+using TechLibrary.Infrastructure.Services.Security.Tokens.Access;
 using TechLibrary.Infrastructure.Utils;
 
 const string AUTHENTICATION_TYPE = "Bearer";
 
 var builder = WebApplication.CreateBuilder(args);
+
 
 // Add services to the container.
 
@@ -54,15 +65,21 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-builder.Services.AddSingleton<JwtTokenGenerator>();
-builder.Services.AddSingleton<BCryptAlgorithm>();
+builder.Services.AddSingleton<JwtService>();
+builder.Services.AddSingleton<EncryptionService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-builder.Services.AddScoped<RegisterUserUseCase>();
-builder.Services.AddScoped<DoLoginUseCase>();
-builder.Services.AddScoped<FilterBookUseCase>();
-builder.Services.AddScoped<BookCheckoutUseCase>();
-builder.Services.AddScoped<LoggedUserService>();
+builder.Services.AddScoped<IRegisterUserUseCase, RegisterUserUseCase>();
+builder.Services.AddScoped<IValidator<RequestRegisterUserDTO>, RegisterUserValidator>();
+builder.Services.AddScoped<IDoLoginUseCase, DoLoginUseCase>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IJwtService, JwtService>();
+builder.Services.AddScoped<IEncryptionService, EncryptionService>();
+builder.Services.AddScoped<IFilterBooksUseCase, FilterBookUseCase>();
+builder.Services.AddScoped<IBookRepository, BookRepository>();
+builder.Services.AddScoped<IBookCheckoutUseCase, BookCheckoutUseCase>();
+builder.Services.AddScoped<ICheckoutRepository, CheckoutRepository>();
+builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
 builder.Services.AddMvc(options => options.Filters.Add(typeof(ExceptionFilter)));
 
