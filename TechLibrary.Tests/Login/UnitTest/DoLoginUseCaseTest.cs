@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using FluentAssertions;
+using Moq;
 using TechLibrary.Application.DTOs.Login.Request;
 using TechLibrary.Application.UseCases.Login;
 using TechLibrary.Domain.Entities;
@@ -23,7 +24,11 @@ namespace TechLibrary.Tests.Login.UnitTest
             };
 
             //Act & Assert
-            await Assert.ThrowsAsync<InvalidLoginException>(async () => await DoLoginUseCase.ExecuteLoginAsync(request));
+            await FluentActions
+                .Awaiting(async () => await DoLoginUseCase.ExecuteLoginAsync(request))
+                .Should()
+                .ThrowAsync<InvalidLoginException>();
+
         }
 
         [Fact]
@@ -48,7 +53,10 @@ namespace TechLibrary.Tests.Login.UnitTest
             };
 
             //Act & Assert
-            await Assert.ThrowsAsync<InvalidLoginException>(async () => await DoLoginUseCase.ExecuteLoginAsync(request));
+            await FluentActions
+                .Awaiting(async () => await DoLoginUseCase.ExecuteLoginAsync(request))
+                .Should()
+                .ThrowAsync<InvalidLoginException>();
         }
 
         [Fact]
@@ -57,6 +65,7 @@ namespace TechLibrary.Tests.Login.UnitTest
             //Arrange
 
             var user = GetValidUser();
+            var accessToken = "jwtToken";
 
             UserRepository
                 .Setup(x => x.GetUserByEmailAsync(It.IsAny<string>()))
@@ -68,7 +77,7 @@ namespace TechLibrary.Tests.Login.UnitTest
 
             JwtService
                 .Setup(x => x.GenerateToken(It.IsAny<Guid>()))
-                .Returns("tokenAcesso");
+                .Returns(accessToken);
 
             var request = new RequestLoginDTO
             {
@@ -80,9 +89,9 @@ namespace TechLibrary.Tests.Login.UnitTest
             var result = await DoLoginUseCase.ExecuteLoginAsync(request);
 
             //Assert
-            Assert.NotNull(result);
-            Assert.Equal(user.Name, result.Name);
-            Assert.Equal("tokenAcesso", result.AccessToken);
+            result.Should().NotBeNull();
+            result.Name.Should().Be(user.Name);
+            result.AccessToken.Should().Be(accessToken);
         }
     }
 }

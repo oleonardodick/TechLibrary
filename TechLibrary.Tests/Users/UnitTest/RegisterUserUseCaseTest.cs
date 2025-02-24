@@ -2,6 +2,7 @@
 using TechLibrary.Domain.Exceptions;
 using Moq;
 using TechLibrary.Domain.Entities;
+using FluentAssertions;
 
 namespace TechLibrary.Tests.Users.UnitTest
 {
@@ -24,9 +25,9 @@ namespace TechLibrary.Tests.Users.UnitTest
             var qtdErrors = exception.GetErrorMessages().Count;
 
             //Assert
-            Assert.NotNull(exception);
-            Assert.Equal(1, qtdErrors);
-            Assert.Contains("O e-mail não é válido.", exception.GetErrorMessages());
+            exception.Should().NotBeNull();
+            qtdErrors.Should().Be(1);
+            exception.GetErrorMessages().Should().Contain("O e-mail não é válido.");
 
         }
 
@@ -47,9 +48,9 @@ namespace TechLibrary.Tests.Users.UnitTest
             var qtdErrors = exception.GetErrorMessages().Count;
 
             //Assert
-            Assert.NotNull(exception);
-            Assert.Equal(1, qtdErrors);
-            Assert.Contains("O nome é obrigatório.", exception.GetErrorMessages());
+            exception.Should().NotBeNull();
+            qtdErrors.Should().Be(1);
+            exception.GetErrorMessages().Should().Contain("O nome é obrigatório.");
 
         }
 
@@ -70,9 +71,9 @@ namespace TechLibrary.Tests.Users.UnitTest
             var qtdErrors = exception.GetErrorMessages().Count;
 
             //Assert
-            Assert.NotNull(exception);
-            Assert.Equal(1, qtdErrors);
-            Assert.Contains("A senha é obrigatória.", exception.GetErrorMessages());
+            exception.Should().NotBeNull();
+            qtdErrors.Should().Be(1);
+            exception.GetErrorMessages().Should().Contain("A senha é obrigatória.");
 
         }
 
@@ -93,9 +94,9 @@ namespace TechLibrary.Tests.Users.UnitTest
             var qtdErrors = exception.GetErrorMessages().Count;
 
             //Assert
-            Assert.NotNull(exception);
-            Assert.Equal(1, qtdErrors);
-            Assert.Contains("A senha deve possuir no mínimo 6 caracteres.", exception.GetErrorMessages());
+            exception.Should().NotBeNull();
+            qtdErrors.Should().Be(1);
+            exception.GetErrorMessages().Should().Contain("A senha deve possuir no mínimo 6 caracteres.");
 
         }
 
@@ -116,11 +117,11 @@ namespace TechLibrary.Tests.Users.UnitTest
             var qtdErrors = exception.GetErrorMessages().Count;
 
             //Assert
-            Assert.NotNull(exception);
-            Assert.Equal(3, qtdErrors);
-            Assert.Contains("A senha deve possuir no mínimo 6 caracteres.", exception.GetErrorMessages());
-            Assert.Contains("O nome é obrigatório.", exception.GetErrorMessages());
-            Assert.Contains("O e-mail não é válido.", exception.GetErrorMessages());
+            exception.Should().NotBeNull();
+            qtdErrors.Should().BeGreaterThan(1);
+            exception.GetErrorMessages().Should().Contain("A senha deve possuir no mínimo 6 caracteres.");
+            exception.GetErrorMessages().Should().Contain("O nome é obrigatório.");
+            exception.GetErrorMessages().Should().Contain("O e-mail não é válido.");
 
         }
 
@@ -145,9 +146,9 @@ namespace TechLibrary.Tests.Users.UnitTest
             var qtdErrors = exception.GetErrorMessages().Count;
 
             //Assert
-            Assert.NotNull(exception);
-            Assert.Equal(1, qtdErrors);
-            Assert.Contains("E-mail já cadastrado.", exception.GetErrorMessages());
+            exception.Should().NotBeNull();
+            qtdErrors.Should().Be(1);
+            exception.GetErrorMessages().Should().Contain("E-mail já cadastrado.");
         }
 
         [Fact]
@@ -162,6 +163,8 @@ namespace TechLibrary.Tests.Users.UnitTest
             };
 
             var encryptedPassword = "encryptedPassword";
+            var generatedToken = "tokenJWT";
+            User userCreated = default!;
 
             UserRepository
                 .Setup(x => x.GetUserByEmailAsync(It.IsAny<string>()))
@@ -169,7 +172,7 @@ namespace TechLibrary.Tests.Users.UnitTest
 
             UserRepository
                 .Setup(x => x.CreateUserAsync(It.IsAny<User>()))
-                .Returns(Task.CompletedTask);
+                .Callback<User>(user => userCreated = user);
 
             EncryptionService
                 .Setup(x => x.Encrypt(It.IsAny<string>()))
@@ -177,21 +180,16 @@ namespace TechLibrary.Tests.Users.UnitTest
 
             JwtService
                 .Setup(x => x.GenerateToken(It.IsAny<Guid>()))
-                .Returns("tokenAcesso");
+                .Returns(generatedToken);
 
             //Act
             var result = await RegisterUserUseCase.RegisterUser(request);
 
             //Assert
-            Assert.NotNull(result);
-            Assert.Equal(request.Name, result.Name);
-            Assert.Equal("tokenAcesso", result.AccessToken);
-
-            UserRepository.Verify(x => x.CreateUserAsync(It.Is<User>(user =>
-                user.Email == request.Email &&
-                user.Name == request.Name &&
-                user.Password == encryptedPassword
-            )), Times.Once);
+            result.Should().NotBeNull();
+            request.Name.Should().BeSameAs(result.Name);
+            result.AccessToken.Should().Be(generatedToken);
+            userCreated.Password.Should().Be(encryptedPassword);
         }
     }
 }

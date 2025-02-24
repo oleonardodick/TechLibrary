@@ -1,20 +1,22 @@
-﻿using Moq;
+﻿using FluentAssertions;
+using Moq;
 using TechLibrary.Application.DTOs.Books.Request;
-using TechLibrary.Domain.Entities;
+using TechLibrary.Tests.Books.Utils;
 
 namespace TechLibrary.Tests.Books.UnitTest
 {
     public class FilterBookUseCaseTest : FilterBookUseCaseTestBase
     {
         [Fact]
-        public async Task ShouldReturnBooksAllBooks()
+        public async Task ShouldReturnAllBooks()
         {
             //Arrange
             var request = new RequestFilterBooksDTO
             {
                 PageNumber = 1
             };
-            var books = GetBooks();
+            var qtdBooks = 15;
+            var books = FakeDataBooks.FakeListBooks(qtdBooks);
 
             BookRepository
                 .Setup(x => x.FilterBooksAsync(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
@@ -23,25 +25,26 @@ namespace TechLibrary.Tests.Books.UnitTest
             //Act
             var response = await FilterBookUseCase.ExecuteAsync(request);
 
+
             //Assert
-            Assert.NotNull(response);
-            Assert.NotNull(response.Books);
-            Assert.Equal(15, response.Books.Count);
-            Assert.Equal(1, response.Pagination.PageNumber);
-            Assert.Equal(2, response.Pagination.TotalPages);
-            Assert.Equal(15, response.Pagination.TotalCount);
+            response.Should().NotBeNull();
+            response.Books.Should().NotBeNull().And.HaveCount(books.Count);
+            response.Pagination.PageNumber.Should().Be(1);
+            response.Pagination.TotalPages.Should().Be(2);
+            response.Pagination.TotalCount.Should().Be(qtdBooks);
         }
 
         [Fact]
         public async Task ShouldReturnFilteredBook()
         {
             //Arrange
+            var books = FakeDataBooks.FakeListBooks(5);
+
             var request = new RequestFilterBooksDTO
             {
-                Title = "Book 1",
+                Title = books[0].Title,
                 PageNumber = 1
             };
-            var books = GetBooks();
 
             var filteredBooks = books.Where(x => x.Title == request.Title).ToList();
 
@@ -53,12 +56,12 @@ namespace TechLibrary.Tests.Books.UnitTest
             var response = await FilterBookUseCase.ExecuteAsync(request);
 
             //Assert
-            Assert.NotNull(response);
-            Assert.NotNull(response.Books);
-            Assert.Single(response.Books);
-            Assert.Equal(1, response.Pagination.PageNumber);
-            Assert.Equal(1, response.Pagination.TotalPages);
-            Assert.Equal(1, response.Pagination.TotalCount);
+            response.Should().NotBeNull();
+            response.Books.Should().NotBeNull().And.HaveCount(1);
+            response.Books[0].Title.Should().Be(request.Title);
+            response.Pagination.PageNumber.Should().Be(1);
+            response.Pagination.TotalPages.Should().Be(1);
+            response.Pagination.TotalCount.Should().Be(1);
         }
 
         [Fact]
@@ -78,11 +81,11 @@ namespace TechLibrary.Tests.Books.UnitTest
             var response = await FilterBookUseCase.ExecuteAsync(request);
 
             //Assert
-            Assert.NotNull(response);
-            Assert.Empty(response.Books);
-            Assert.Equal(3, response.Pagination.PageNumber);
-            Assert.Equal(2, response.Pagination.TotalPages);
-            Assert.Equal(15, response.Pagination.TotalCount);
+            response.Should().NotBeNull();
+            response.Books.Should().BeEmpty();
+            response.Pagination.PageNumber.Should().Be(3);
+            response.Pagination.TotalPages.Should().Be(2);
+            response.Pagination.TotalCount.Should().Be(15);
         }
     }
 }
