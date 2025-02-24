@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Hosting.Server;
+using Microsoft.EntityFrameworkCore;
 using TechLibrary.Domain.Entities;
 
 namespace TechLibrary.Infrastructure.DataAccess
@@ -8,13 +9,12 @@ namespace TechLibrary.Infrastructure.DataAccess
         public DbSet<User> Users { get; set; }
         public DbSet<Book> Books { get; set; }
         public DbSet<Checkout> Checkouts { get; set; }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+
+        public TechLibraryDbContext(DbContextOptions<TechLibraryDbContext> options) : base(options) { }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            var solutionPath = Directory.GetParent(Directory.GetCurrentDirectory())?.Parent?.FullName;
-            var dbPath = Path.Combine(solutionPath ?? "", "TechLibrary\\TechLibraryDb.db");
-
-            optionsBuilder.UseSqlite($"Data Source={dbPath}");
-
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

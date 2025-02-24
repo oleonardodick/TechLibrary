@@ -8,6 +8,10 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" />
   </ItemGroup>
 
@@ -16,5 +20,9 @@
     <ProjectReference Include="..\TechLibrary.Domain\TechLibrary.Domain.csproj" />
     <ProjectReference Include="..\TechLibrary.Infrastructure\TechLibrary.Infrastructure.csproj" />
   </ItemGroup>
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="TechLibrary.Tests" />
+	</ItemGroup>
 
 </Project>
