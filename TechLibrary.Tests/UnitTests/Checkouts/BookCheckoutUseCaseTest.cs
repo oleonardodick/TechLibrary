@@ -4,7 +4,7 @@ using TechLibrary.Domain.Entities;
 using TechLibrary.Domain.Exceptions;
 using TechLibrary.Tests.Utils.Books;
 
-namespace TechLibrary.Tests.UnitTests.Checkouts.UnitTest
+namespace TechLibrary.Tests.UnitTests.Checkouts
 {
     public class BookCheckoutUseCaseTest : BookCheckoutUseCaseTestBase
     {

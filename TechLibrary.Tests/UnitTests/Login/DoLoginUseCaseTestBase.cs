@@ -4,7 +4,7 @@ using TechLibrary.Domain.Entities;
 using TechLibrary.Domain.Interfaces.Repositories;
 using TechLibrary.Domain.Interfaces.Services;
 
-namespace TechLibrary.Tests.UnitTests.Login.UnitTest
+namespace TechLibrary.Tests.UnitTests.Login
 {
     public abstract class DoLoginUseCaseTestBase
     {
