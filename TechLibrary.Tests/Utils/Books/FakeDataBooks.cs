@@ -1,7 +1,7 @@
 ﻿using Bogus;
 using TechLibrary.Domain.Entities;
 
-namespace TechLibrary.Tests.Books.Utils
+namespace TechLibrary.Tests.Utils.Books
 {
     public static class FakeDataBooks
     {

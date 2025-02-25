@@ -1,11 +1,10 @@
 ﻿using Moq;
-using TechLibrary.Application.DTOs.Login.Request;
 using TechLibrary.Application.UseCases.Login;
 using TechLibrary.Domain.Entities;
 using TechLibrary.Domain.Interfaces.Repositories;
 using TechLibrary.Domain.Interfaces.Services;
 
-namespace TechLibrary.Tests.Login.UnitTest
+namespace TechLibrary.Tests.UnitTests.Login.UnitTest
 {
     public abstract class DoLoginUseCaseTestBase
     {

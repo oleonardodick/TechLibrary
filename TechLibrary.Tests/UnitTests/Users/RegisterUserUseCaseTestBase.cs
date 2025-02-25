@@ -6,7 +6,7 @@ using TechLibrary.Application.Validators;
 using TechLibrary.Domain.Interfaces.Repositories;
 using TechLibrary.Domain.Interfaces.Services;
 
-namespace TechLibrary.Tests.Users.UnitTest
+namespace TechLibrary.Tests.UnitTests.Users
 {
     public abstract class RegisterUserUseCaseTestBase
     {

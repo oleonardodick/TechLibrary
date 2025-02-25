@@ -5,7 +5,7 @@ using TechLibrary.Application.UseCases.Login;
 using TechLibrary.Domain.Entities;
 using TechLibrary.Domain.Exceptions;
 
-namespace TechLibrary.Tests.Login.UnitTest
+namespace TechLibrary.Tests.UnitTests.Login.UnitTest
 {
     public class DoLoginUseCaseTest : DoLoginUseCaseTestBase
     {

@@ -2,9 +2,9 @@
 using Moq;
 using TechLibrary.Domain.Entities;
 using TechLibrary.Domain.Exceptions;
-using TechLibrary.Tests.Books.Utils;
+using TechLibrary.Tests.Utils.Books;
 
-namespace TechLibrary.Tests.Checkouts.UnitTest
+namespace TechLibrary.Tests.UnitTests.Checkouts.UnitTest
 {
     public class BookCheckoutUseCaseTest : BookCheckoutUseCaseTestBase
     {

@@ -4,7 +4,7 @@ using Moq;
 using TechLibrary.Domain.Entities;
 using FluentAssertions;
 
-namespace TechLibrary.Tests.Users.UnitTest
+namespace TechLibrary.Tests.UnitTests.Users
 {
     public class RegisterUserUseCaseTest : RegisterUserUseCaseTestBase
     {

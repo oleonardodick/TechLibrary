@@ -2,7 +2,7 @@
 using TechLibrary.Application.UseCases.Books;
 using TechLibrary.Domain.Interfaces.Repositories;
 
-namespace TechLibrary.Tests.Books.UnitTest
+namespace TechLibrary.Tests.UnitTests.Books
 {
     public abstract class FilterBookUseCaseTestBase
     {

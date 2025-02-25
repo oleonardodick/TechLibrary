@@ -9,7 +9,7 @@ using FluentAssertions;
 using TechLibrary.Application.DTOs.Error.Response;
 using System;
 
-namespace TechLibrary.Tests.Filters
+namespace TechLibrary.Tests.UnitTests.Filters
 {
     public class ExceptionFilterTest
     {

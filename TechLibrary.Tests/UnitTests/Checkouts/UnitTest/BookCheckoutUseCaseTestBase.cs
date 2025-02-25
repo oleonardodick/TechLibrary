@@ -3,7 +3,7 @@ using TechLibrary.Application.UseCases.Checkout;
 using TechLibrary.Domain.Interfaces.Repositories;
 using TechLibrary.Domain.Interfaces.Services;
 
-namespace TechLibrary.Tests.Checkouts.UnitTest
+namespace TechLibrary.Tests.UnitTests.Checkouts.UnitTest
 {
     public abstract class BookCheckoutUseCaseTestBase
     {

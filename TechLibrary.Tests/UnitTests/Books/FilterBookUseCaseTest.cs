@@ -1,9 +1,9 @@
 ﻿using FluentAssertions;
 using Moq;
 using TechLibrary.Application.DTOs.Books.Request;
-using TechLibrary.Tests.Books.Utils;
+using TechLibrary.Tests.Utils.Books;
 
-namespace TechLibrary.Tests.Books.UnitTest
+namespace TechLibrary.Tests.UnitTests.Books
 {
     public class FilterBookUseCaseTest : FilterBookUseCaseTestBase
     {
