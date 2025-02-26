@@ -45,6 +45,12 @@ namespace TechLibrary.Application.UseCases.Users
             };
         }
 
+        /// <summary>
+        /// Validates the user data provided.
+        /// </summary>
+        /// <param name="request">User data to validate.</param>
+        /// <returns>Throws an exception when the name is not informed, password less then 6 characteres, invalid email or duplicated email.</returns>
+        /// <exception cref="ErrorOnValidationException"></exception>
         private async Task ValidateUser(RequestRegisterUserDTO request)
         {
             var result = await _validator.ValidateAsync(request);

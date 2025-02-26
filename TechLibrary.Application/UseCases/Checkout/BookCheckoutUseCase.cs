@@ -27,6 +27,13 @@ namespace TechLibrary.Application.UseCases.Checkout
             await _checkoutRepository.CreateBookCheckoutAsync(bookId, user);
         }
 
+        /// <summary>
+        /// Validate the book provided by parameter and stops the process when an error occurred.
+        /// </summary>
+        /// <param name="bookId">Id of the book that will be checked out. The ID should be <see cref="Guid"/>. Example: <c>123e4567-e89b-12d3-a456-426614174000</c>.</param>
+        /// <exception cref="NotFoundException"></exception>
+        /// <exception cref="ConflictException"></exception>
+        /// <returns>A task representing the asynchronous operation.</returns>
         private async Task Validate(Guid bookId)
         {
             var book = await _bookRepository.GetBookAsync(bookId);
