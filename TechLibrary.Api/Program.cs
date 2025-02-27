@@ -1,9 +1,6 @@
 using FluentValidation;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using TechLibrary.Api.Filters;
 using TechLibrary.Api.Middlewares;
 using TechLibrary.Application.DTOs.Users.Request;
 using TechLibrary.Application.Interfaces.Books;
