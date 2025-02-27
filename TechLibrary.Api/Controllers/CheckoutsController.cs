@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TechLibrary.Application.DTOs.Error.Response;
 using TechLibrary.Application.Interfaces.Checkout;
 
 namespace TechLibrary.Api.Controllers
@@ -18,6 +19,8 @@ namespace TechLibrary.Api.Controllers
 
         [HttpPost]
         [Route("{bookId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ResponseErrorMessagesDTO), StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> BookCheckout(Guid bookId)
         {
             await _bookCheckoutUseCase.CheckoutBook(bookId);

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using TechLibrary.Application.DTOs.Error.Response;
+﻿using TechLibrary.Application.DTOs.Error.Response;
 using TechLibrary.Domain.Exceptions;
 
 namespace TechLibrary.Api.Middlewares

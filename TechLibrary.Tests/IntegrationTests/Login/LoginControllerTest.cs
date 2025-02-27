@@ -5,7 +5,6 @@ using System.Net.Http.Json;
 using TechLibrary.Application.DTOs.Error.Response;
 using TechLibrary.Application.DTOs.Login.Request;
 using TechLibrary.Application.DTOs.Users.Response;
-using TechLibrary.Domain.Entities;
 using TechLibrary.Infrastructure.Services.Security.Cryptography;
 using TechLibrary.Tests.Utils.Users;
 

@@ -21,6 +21,7 @@ namespace TechLibrary.Tests.IntegrationTests
 
         public async Task DisposeAsync() {
             await _factory.ResetDatabaseAsync();
+            _client.DefaultRequestHeaders.Remove("Authorization");
             _scope.Dispose();
         }
 

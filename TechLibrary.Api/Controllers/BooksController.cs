@@ -18,7 +18,6 @@ namespace TechLibrary.Api.Controllers
 
         [HttpGet("Filter")]
         [ProducesResponseType(typeof(ResponseBooksDTO), StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> Filter(int pageNumber, string? title)
         {
             var result = await _filterBookUseCase.ExecuteAsync(new RequestFilterBooksDTO
