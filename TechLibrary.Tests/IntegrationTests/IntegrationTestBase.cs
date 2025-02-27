@@ -3,7 +3,8 @@ using TechLibrary.Infrastructure.DataAccess;
 
 namespace TechLibrary.Tests.IntegrationTests
 {
-    public abstract class IntegrationTestBase : IClassFixture<IntegrationTestFactory>, IAsyncLifetime
+    [Collection("integration tests")]
+    public abstract class IntegrationTestBase : IAsyncLifetime
     {
         protected readonly IntegrationTestFactory _factory;
         protected readonly HttpClient _client;
