@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using TechLibrary.Api.Filters;
+using TechLibrary.Api.Middlewares;
 using TechLibrary.Application.DTOs.Users.Request;
 using TechLibrary.Application.Interfaces.Books;
 using TechLibrary.Application.Interfaces.Checkout;
@@ -26,8 +27,6 @@ using TechLibrary.Infrastructure.Services.Security.Tokens.Access;
 const string AUTHENTICATION_TYPE = "Bearer";
 
 var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddInfrastructure();
 
 // Add services to the container.
 
@@ -83,51 +82,12 @@ builder.Services.AddScoped<IBookCheckoutUseCase, BookCheckoutUseCase>();
 builder.Services.AddScoped<ICheckoutRepository, CheckoutRepository>();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
-builder.Services.AddMvc(options => options.Filters.Add(typeof(ExceptionFilter)));
+builder.Services.AddInfrastructure();
 
 builder.Services.AddDbContext<TechLibraryDbContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-
-//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-//    .AddJwtBearer(options =>
-//    {
-//        options.TokenValidationParameters = new TokenValidationParameters
-//        {
-//            ValidateIssuer = false,
-//            ValidateAudience = false,
-//            ValidateLifetime = true,
-//            ValidateIssuerSigningKey = true,
-//            IssuerSigningKey = JwtSecurityHelper.GetSecurityKey(builder.Configuration)
-//        };
-//    });
-
-//using (var scope = builder.Services.BuildServiceProvider().CreateScope())
-//{
-//    var keyProvider = scope.ServiceProvider.GetRequiredService<IJwtKeyProvider>();
-//    var key = keyProvider.GetSigningKey();
-
-//    builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-//        .AddJwtBearer(options =>
-//        {
-//            options.TokenValidationParameters = new TokenValidationParameters
-//            {
-//                ValidateIssuer = false,
-//                ValidateAudience = false,
-//                ValidateLifetime = true,
-//                ValidateIssuerSigningKey = true,
-//                IssuerSigningKey = key
-//            };
-//        });
-//};
-
-//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-//    .AddJwtBearer(options =>
-//    {
-//        // O JwtKeyProvider será injetado automaticamente aqui
-//        builder.Services.BuildServiceProvider().GetService<IJwtKeyProvider>().ConfigureJwtBearerOptions(options);
-//    });
 
 var app = builder.Build();
 
@@ -138,6 +98,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseHttpsRedirection();
 

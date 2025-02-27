@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using TechLibrary.Domain.Exceptions;
 using TechLibrary.Domain.Interfaces.Services;
 
 namespace TechLibrary.Infrastructure.Services.Security.Tokens.Configuration
@@ -24,6 +25,15 @@ namespace TechLibrary.Infrastructure.Services.Security.Tokens.Configuration
                 ValidateLifetime = true,
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = key
+            };
+
+            options.Events = new JwtBearerEvents
+            {
+                OnChallenge = context =>
+                {
+                    context.HandleResponse();
+                    throw new InvalidTokenException();
+                }
             };
         }
     }
