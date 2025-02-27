@@ -7,6 +7,7 @@ using TechLibrary.Application.DTOs.Login.Request;
 using TechLibrary.Application.DTOs.Users.Response;
 using TechLibrary.Domain.Entities;
 using TechLibrary.Infrastructure.Services.Security.Cryptography;
+using TechLibrary.Tests.Utils.Users;
 
 namespace TechLibrary.Tests.IntegrationTests.Login
 {
@@ -24,12 +25,7 @@ namespace TechLibrary.Tests.IntegrationTests.Login
         public async Task ShouldReturnInvalidEmailOrPassword(string email, string password)
         {
             //Arange
-            var user = new User
-            {
-                Name = "testUser",
-                Email = "valid@mail.com",
-                Password = _encryptionService.Encrypt("validPassword")
-            };
+            var user = FakeDataUsers.FakeUserWithSpecificValues(email: "valid@mail.com", password: _encryptionService.Encrypt("validPassword"));
 
             await _dbContext.Users.AddAsync(user);
             await _dbContext.SaveChangesAsync();
@@ -57,12 +53,7 @@ namespace TechLibrary.Tests.IntegrationTests.Login
         public async Task ShouldReturnOkAndTheUserToken()
         {
             //Arrange
-            var user = new User
-            {
-                Name = "testUser",
-                Email = "valid@mail.com",
-                Password = _encryptionService.Encrypt("validPassword")
-            };
+            var user = FakeDataUsers.FakeUserWithSpecificValues(email: "valid@mail.com", password: _encryptionService.Encrypt("validPassword"));
 
             await _dbContext.Users.AddAsync(user);
             await _dbContext.SaveChangesAsync();
